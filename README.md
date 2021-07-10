@@ -16,3 +16,7 @@ TodoList style Skynet
    launch, visit [localhost:3000](localhost:3000). Create React App will
    auto-reload when you save files. (Use <kbd>Ctrl</kbd>+<kbd>C</kbd> in the
    terminal to stop your app.)
+
+## Link by Skynet
+
+https://1002jlbrkv3h912oavjftp743vk7rjko3jcf3mjpp8v8eim9u09v24o.siasky.net/

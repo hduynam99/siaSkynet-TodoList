@@ -15,6 +15,9 @@ import { Image, Container } from 'semantic-ui-react';
 // Import the SkynetClient and a helper
 import { SkynetClient } from 'skynet-js';
 
+// const portal = window.location.hostname === 'localhost' ? 'https://siasky.net' : undefined;
+// const client = new SkynetClient(portal);
+
 // Initiate the SkynetClient
 const client = new SkynetClient();
 
@@ -37,7 +40,8 @@ function App() {
   }, [newTodo]);
 
   //choose data domain for saving files in MySky
-  const dataDomain = 'todolist1';
+  const dataDomain = 'todolist';
+
   // On initial run, start initialization of MySky
   useEffect(() => {
     // define async setup function
@@ -46,6 +50,7 @@ function App() {
         // load invisible iframe and define app's data domain
         // needed for permissions write
         const mySky = await client.loadMySky(dataDomain);
+
 
         // load necessary DACs and permissions
         await mySky.loadDacs(contentRecord);
@@ -59,6 +64,16 @@ function App() {
         setLoggedIn(loggedIn);
         if (loggedIn) {
           setUserID(await mySky.userID());
+          // load data from user
+          const { data } = await mySky.getJSON(dataDomain);
+          //set state for todo list
+          if (data) {
+            setTodoList(data)
+            setTodoData(data)
+            console.log(data)
+          } else {
+            console.error('There was a problem with getJSON');
+          }
         }
       } catch (e) {
         console.error(e);
@@ -77,6 +92,7 @@ function App() {
 
     if (status) {
       setUserID(await mySky.userID());
+      window.location.reload();
     }
 
   };
@@ -116,7 +132,7 @@ function App() {
 
     try {
       await mySky.setJSON(dataDomain, jsonData);
-      loadData();
+      await loadData();
     } catch (error) {
       console.log(`error with setJSON: ${error.message}`);
     }
